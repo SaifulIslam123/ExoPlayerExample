@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The Android Open Source Project
+ * Copyright (Utils) 2018 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,65 +20,60 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.IBinder;
 
 import android.support.v4.media.MediaDescriptionCompat;
-import android.support.v4.media.session.MediaSessionCompat;
 
 import androidx.annotation.Nullable;
 
 import com.example.exoplayerexample.R;
-import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.example.exoplayerexample.Utils;
 import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
 import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator;
-import com.google.android.exoplayer2.source.ConcatenatingMediaSource;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager.BitmapCallback;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager.MediaDescriptionAdapter;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager.NotificationListener;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.upstream.cache.CacheDataSource;
-import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory;
-import com.google.android.exoplayer2.util.Util;
+import com.google.gson.Gson;
 
-import static com.example.exoplayerexample.audio.C.MEDIA_SESSION_TAG;
-import static com.example.exoplayerexample.audio.C.PLAYBACK_CHANNEL_ID;
-import static com.example.exoplayerexample.audio.C.PLAYBACK_NOTIFICATION_ID;
+import static com.example.exoplayerexample.Utils.PLAYBACK_CHANNEL_ID;
+import static com.example.exoplayerexample.Utils.PLAYBACK_NOTIFICATION_ID;
+import static com.example.exoplayerexample.Utils.PREF_NAME;
 import static com.example.exoplayerexample.audio.Samples.SAMPLES;
 
 public class AudioPlayerService extends Service {
 
-    private SimpleExoPlayer player;
+    private SingletonAudio singletonAudio;
     private PlayerNotificationManager playerNotificationManager;
-    private MediaSessionCompat mediaSession;
-    private MediaSessionConnector mediaSessionConnector;
+    SharedPreferences pref;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        final Context context = this;
+        final Context context = getApplicationContext();
 
-        player = ExoPlayerFactory.newSimpleInstance(context, new DefaultTrackSelector());
-        DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(
+        pref = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        singletonAudio = SingletonAudio.getSingletonAudioInstance(getApplicationContext());
+
+        /*player = ExoPlayerFactory.newSimpleInstance(context, new DefaultTrackSelector());
+        dataSourceFactory = new DefaultDataSourceFactory(
                 context, Util.getUserAgent(context, getString(R.string.application_name)));
-        CacheDataSourceFactory cacheDataSourceFactory = new CacheDataSourceFactory(
+        cacheDataSourceFactory = new CacheDataSourceFactory(
                 DownloadUtil.getCache(context),
                 dataSourceFactory,
                 CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR);
-        ConcatenatingMediaSource concatenatingMediaSource = new ConcatenatingMediaSource();
+        concatenatingMediaSource = new ConcatenatingMediaSource();*/
         for (Samples.Sample sample : SAMPLES) {
-            MediaSource mediaSource = new ExtractorMediaSource.Factory(cacheDataSourceFactory)
+            MediaSource mediaSource = new ExtractorMediaSource.Factory(singletonAudio.getCacheDataSourceFactory())
                     .createMediaSource(sample.uri);
-            concatenatingMediaSource.addMediaSource(mediaSource);
+            singletonAudio.getConcatenatingMediaSource().addMediaSource(mediaSource);
         }
-        player.prepare(concatenatingMediaSource);
-        player.setPlayWhenReady(true);
+        singletonAudio.getSimpleExoPlayer().prepare(singletonAudio.getConcatenatingMediaSource());
+        singletonAudio.getSimpleExoPlayer().setPlayWhenReady(true);
 
         playerNotificationManager = PlayerNotificationManager.createWithNotificationChannel(
                 context,
@@ -122,29 +117,36 @@ public class AudioPlayerService extends Service {
                 stopSelf();
             }
         });
-        playerNotificationManager.setPlayer(player);
+        playerNotificationManager.setPlayer(singletonAudio.getSimpleExoPlayer());
 
-        mediaSession = new MediaSessionCompat(context, MEDIA_SESSION_TAG);
-        mediaSession.setActive(true);
-        playerNotificationManager.setMediaSessionToken(mediaSession.getSessionToken());
+        //mediaSession = new MediaSessionCompat(context, MEDIA_SESSION_TAG);
+        singletonAudio.getMediaSession().setActive(true);
+        playerNotificationManager.setMediaSessionToken(singletonAudio.getMediaSession().getSessionToken());
 
-        mediaSessionConnector = new MediaSessionConnector(mediaSession);
-        mediaSessionConnector.setQueueNavigator(new TimelineQueueNavigator(mediaSession) {
+        // mediaSessionConnector = new MediaSessionConnector(mediaSession);
+        singletonAudio.getMediaSessionConnector().setQueueNavigator(new TimelineQueueNavigator(singletonAudio.getMediaSession()) {
             @Override
             public MediaDescriptionCompat getMediaDescription(Player player, int windowIndex) {
                 return Samples.getMediaDescription(context, SAMPLES[windowIndex]);
             }
         });
-        mediaSessionConnector.setPlayer(player, null);
+        singletonAudio.getMediaSessionConnector().setPlayer(singletonAudio.getSimpleExoPlayer(), null);
+
+
+        /*Gson gson = new Gson();
+        String json = gson.toJson(singletonAudio);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(Utils.AUDIO_SINGLETON_OBJ, json);
+        editor.commit();*/
     }
 
     @Override
     public void onDestroy() {
-        mediaSession.release();
-        mediaSessionConnector.setPlayer(null, null);
+        singletonAudio.getMediaSession().release();
+        singletonAudio.getMediaSessionConnector().setPlayer(null, null);
         playerNotificationManager.setPlayer(null);
-        player.release();
-        player = null;
+        singletonAudio.getSimpleExoPlayer().release();
+        singletonAudio.setSimpleExoPlayer(null);
 
         super.onDestroy();
     }

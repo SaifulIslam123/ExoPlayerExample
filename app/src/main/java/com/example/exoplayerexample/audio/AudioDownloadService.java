@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The Android Open Source Project
+ * Copyright (Utils) 2018 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,8 +26,8 @@ import com.google.android.exoplayer2.offline.DownloadService;
 import com.google.android.exoplayer2.scheduler.Scheduler;
 import com.google.android.exoplayer2.ui.DownloadNotificationUtil;
 
-import static com.example.exoplayerexample.audio.C.DOWNLOAD_CHANNEL_ID;
-import static com.example.exoplayerexample.audio.C.DOWNLOAD_NOTIFICATION_ID;
+import static com.example.exoplayerexample.Utils.DOWNLOAD_CHANNEL_ID;
+import static com.example.exoplayerexample.Utils.DOWNLOAD_NOTIFICATION_ID;
 
 
 public class AudioDownloadService extends DownloadService {
