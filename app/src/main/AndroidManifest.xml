@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_lauch_white_24dp_round"
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:name=".MyApplication">
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,6 +30,7 @@
             android:label="DashVideoPlayerActivity"
             android:theme="@style/PlayerTheme" />
         <activity android:name=".audio.AudioStreamingActivity" />
+        <activity android:name=".audio.HlsFileStreamingActivity" />
 
         <service android:name=".audio.AudioDownloadService" />
         <service android:name=".audio.AudioPlayerService" />
