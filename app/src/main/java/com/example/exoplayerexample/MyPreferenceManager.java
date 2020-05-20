@@ -50,7 +50,7 @@ public class MyPreferenceManager {
     }
 
     public String getLastPlayedArtistImage(){
-        return  mPreferences.getString(LAST_ARTIST_IMAGE, "");
+        return  mPreferences.getString(LAST_ARTIST_IMAGE, "https://moodle.htwchur.ch/pluginfile.php/124614/mod_page/content/4/example.jpg");
     }
 
     public String getLastPlayedArtist(){

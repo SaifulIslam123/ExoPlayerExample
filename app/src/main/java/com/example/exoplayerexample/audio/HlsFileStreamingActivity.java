@@ -58,18 +58,20 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
     private RecyclerView mRecyclerView;
     private PlaylistRecyclerAdapter mAdapter;
     private ArrayList<MediaMetadataCompat> mainMediaDocumentArrayList = new ArrayList<>();
+    private MediaMetadataCompat mSelectedMedia;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activiyt_hls_streaming);
-        prepareMediaData();
+
         mProgressBar = findViewById(R.id.progress_bar);
         mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new PlaylistRecyclerAdapter(this, mainMediaDocumentArrayList, this);
         mRecyclerView.setAdapter(mAdapter);
-
 
         mMyApplication = MyApplication.getInstance();
         mMyPrefManager = new MyPreferenceManager(this);
@@ -77,6 +79,7 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
         mMediaBrowserHelper = new MediaBrowserHelper(this, MediaService.class);
         mMediaBrowserHelper.setMediaBrowserHelperCallback(this);
 
+        prepareMediaData();
 
         if (savedInstanceState == null) {
 
@@ -100,42 +103,27 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            String newMediaId = intent.getStringExtra(getString(R.string.broadcast_new_media_id));
+            /*String newMediaId = intent.getStringExtra(getString(R.string.broadcast_new_media_id));
             Log.d(TAG, "onReceive: CALLED: " + newMediaId);
             if (getPlaylistFragment() != null) {
                 Log.d(TAG, "onReceive: " + mMyApplication.getMediaItem(newMediaId).getDescription().getMediaId());
                 getPlaylistFragment().updateUI(mMyApplication.getMediaItem(newMediaId));
-            }
+            }*/
         }
     }
-    private MediaMetadataCompat mSelectedMedia;
+
     @Override
     public void onMediaSelected(int position) {
-        getMyApplicationInstance().setMediaItems(mainMediaDocumentArrayList);
-        mSelectedMedia = mainMediaDocumentArrayList.get(position);
-        mAdapter.setSelectedIndex(position);
-        this.onMediaSelected(
-                mSelectArtist.getArtist_id(), // playlist_id = artist_id
-                mainMediaDocumentArrayList.get(position),
-                position);
-        saveLastPlayedSongProperties();
+
     }
 
     public void updateUI(MediaMetadataCompat mediaItem) {
-        mAdapter.setSelectedIndex(mAdapter.getIndexOfItem(mediaItem));
-        mSelectedMedia = mediaItem;
-        saveLastPlayedSongProperties();
+
     }
 
     private void saveLastPlayedSongProperties() {
-        // Save some properties for next time the app opens
-        // NOTE: Normally you'd do this with a cache
-        this.getMyPreferenceManager().savePlaylistId(mSelectArtist.getArtist_id()); // playlist id is same as artist id
-        this.getMyPreferenceManager().saveLastPlayedArtist(mSelectArtist.getArtist_id());
-        this.getMyPreferenceManager().saveLastPlayedArtistImage(mSelectArtist.getImage());
-        this.getMyPreferenceManager().saveLastPlayedMedia(mSelectedMedia.getDescription().getMediaId());
 
-        this.getMyPreferenceManager().
+
     }
 
     public void prepareMediaData() {
@@ -356,7 +344,7 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
                 .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_URI, document.getFieldMediaUrl())
                 .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_DESCRIPTION, document.getFieldDescription())
                 .putString(MediaMetadataCompat.METADATA_KEY_DATE, document.getFieldDateAdded().toString())
-                .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON_URI, getMyPreferenceManager().getLastPlayedArtistImage())
+               .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON_URI, getMyPreferenceManager().getLastPlayedArtistImage())
                 .build();
 
         return media;
@@ -372,7 +360,7 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("active_fragments", MainActivityFragmentManager.getInstance().getFragments().size());
+
     }
 
 
