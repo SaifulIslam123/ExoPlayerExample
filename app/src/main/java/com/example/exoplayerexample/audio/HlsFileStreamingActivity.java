@@ -101,12 +101,12 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            /*String newMediaId = intent.getStringExtra(getString(R.string.broadcast_new_media_id));
+            String newMediaId = intent.getStringExtra(getString(R.string.broadcast_new_media_id));
             Log.d(TAG, "onReceive: CALLED: " + newMediaId);
-            if (getPlaylistFragment() != null) {
+
                 Log.d(TAG, "onReceive: " + mMyApplication.getMediaItem(newMediaId).getDescription().getMediaId());
-                getPlaylistFragment().updateUI(mMyApplication.getMediaItem(newMediaId));
-            }*/
+                updateUI(mMyApplication.getMediaItem(newMediaId));
+
         }
     }
 
@@ -128,6 +128,8 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
     }
 
     public void updateUI(MediaMetadataCompat mediaItem) {
+        mAdapter.setSelectedIndex(mAdapter.getIndexOfItem(mediaItem));
+        saveLastPlayedSongProperties(mediaItem);
 
     }
 
@@ -219,6 +221,7 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
             unregisterReceiver(mUpdateUIBroadcastReceiver);
         }
     }
+
 
     private class SeekBarBroadcastReceiver extends BroadcastReceiver {
 
