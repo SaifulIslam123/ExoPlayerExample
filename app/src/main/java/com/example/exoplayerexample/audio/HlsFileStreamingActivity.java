@@ -148,12 +148,24 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
         mediaDocument.setFieldArtistId("largoo_007");
         mediaDocument.setFieldDateAdded(new Date());
         mediaDocument.setFieldDescription("Andy Largo L.O.T.S. Lechfeld, Bavaria 31-10-2018");
-        mediaDocument.setFieldMediaId("FJYw5g2JgWuoXHoiEeyi");
+       // mediaDocument.setFieldMediaId("FJYw5g2JgWuoXHoiEeyi");
+        mediaDocument.setFieldMediaId("50000015");
         mediaDocument.setFieldMediaUrl("https://bitmovin-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8");
         mediaDocument.setFieldTitle("Andy Largo L.O.T.S. Lechfeld, Bavaria");
         mediaDocument.setFieldMediaImage("https://i.imgur.com/DvpvklR.png");
 
+        MediaDocument mediaDocument2 = new MediaDocument();
+        mediaDocument2.setFieldArtist("Bruno mars");
+        mediaDocument2.setFieldArtistId("mars_007");
+        mediaDocument2.setFieldDateAdded(new Date());
+        mediaDocument2.setFieldDescription("Bruno mars  L.O.T.S. Lechfeld, Bavaria 31-10-2018");
+        mediaDocument2.setFieldMediaId("50000016");
+        mediaDocument2.setFieldMediaUrl("http://playertest.longtailvideo.com/adaptive/bbbfull/bbbfull.m3u8");
+        mediaDocument2.setFieldTitle("Bruno mars song , stay away from me");
+        mediaDocument2.setFieldMediaImage("https://i.imgur.com/DvpvklR.png");
+
         mainMediaDocumentArrayList.add(addToMediaList(mediaDocument));
+        mainMediaDocumentArrayList.add(addToMediaList(mediaDocument2));
 
 
     }
