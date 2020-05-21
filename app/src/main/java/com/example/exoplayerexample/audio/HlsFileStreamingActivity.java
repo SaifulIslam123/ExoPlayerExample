@@ -260,6 +260,7 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
         Log.d(TAG, "onPlaybackStateChanged: called.");
         mIsPlaying = state != null &&
                 state.getState() == PlaybackStateCompat.STATE_PLAYING;
+        getMyPreferenceManager().setLastPlayedSongRunningState(mIsPlaying);
 
         // update UI
         if (getMediaControllerFragment() != null) {
@@ -296,7 +297,7 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
 
             mOnAppOpen = true;
         } else {
-            Toast.makeText(this, "select something to play", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "onMediaSelected select something to play", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -327,7 +328,7 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
                         getMyPreferenceManager().getQueuePosition()
                 );
             } else {
-                Toast.makeText(this, "select something to play", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "playPause select something to play", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -362,6 +363,7 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
      * In a production app you'd want to get this data from a cache.
      */
     private void prepareLastPlayedMedia() {
+        Log.d(TAG, "prepareLastPlayedMedia: ");
         showPrgressBar();
 
         //creating dummy data
@@ -371,6 +373,7 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
             mediaItems.add(mediaDocument1);
             if (mediaDocument1.getDescription().getMediaId().equals(getMyPreferenceManager().getLastPlayedMedia())) {
                 getMediaControllerFragment().setMediaTitle(mediaDocument1);
+                getMediaControllerFragment().setIsPlaying(getMyPreferenceManager().getLastPlayedSongRunningState());
                 updateUI(mediaDocument1);
             }
         }
