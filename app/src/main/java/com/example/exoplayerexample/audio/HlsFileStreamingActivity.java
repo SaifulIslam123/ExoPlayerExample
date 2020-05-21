@@ -104,8 +104,8 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
             String newMediaId = intent.getStringExtra(getString(R.string.broadcast_new_media_id));
             Log.d(TAG, "onReceive: CALLED: " + newMediaId);
 
-                Log.d(TAG, "onReceive: " + mMyApplication.getMediaItem(newMediaId).getDescription().getMediaId());
-                updateUI(mMyApplication.getMediaItem(newMediaId));
+            Log.d(TAG, "onReceive: " + mMyApplication.getMediaItem(newMediaId).getDescription().getMediaId());
+            updateUI(mMyApplication.getMediaItem(newMediaId));
 
         }
     }
@@ -130,7 +130,6 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
     public void updateUI(MediaMetadataCompat mediaItem) {
         mAdapter.setSelectedIndex(mAdapter.getIndexOfItem(mediaItem));
         saveLastPlayedSongProperties(mediaItem);
-
     }
 
     private void saveLastPlayedSongProperties(MediaMetadataCompat mediaItem) {
@@ -150,7 +149,7 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
         mediaDocument.setFieldArtistId("largoo_007");
         mediaDocument.setFieldDateAdded(new Date());
         mediaDocument.setFieldDescription("Andy Largo L.O.T.S. Lechfeld, Bavaria 31-10-2018");
-       // mediaDocument.setFieldMediaId("FJYw5g2JgWuoXHoiEeyi");
+        // mediaDocument.setFieldMediaId("FJYw5g2JgWuoXHoiEeyi");
         mediaDocument.setFieldMediaId("50000015");
         mediaDocument.setFieldMediaUrl("https://bitmovin-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8");
         mediaDocument.setFieldTitle("Andy Largo L.O.T.S. Lechfeld, Bavaria");
@@ -171,6 +170,7 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
 
 
     }
+
     /**
      * Translate the Firestore data into something the MediaBrowserService can deal with (MediaMetaDataCompat objects)
      *
@@ -371,6 +371,7 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
             mediaItems.add(mediaDocument1);
             if (mediaDocument1.getDescription().getMediaId().equals(getMyPreferenceManager().getLastPlayedMedia())) {
                 getMediaControllerFragment().setMediaTitle(mediaDocument1);
+                updateUI(mediaDocument1);
             }
         }
         onFinishedGettingPreviousSessionData(mediaItems);
@@ -392,7 +393,6 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
     }
 
 
