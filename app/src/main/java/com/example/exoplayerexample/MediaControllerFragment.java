@@ -89,7 +89,7 @@ public class MediaControllerFragment extends Fragment implements
         }
         else{
             Glide.with(getActivity())
-                    .load(R.drawable.ic_pause_circle_outline_white_24dp)
+                    .load(R.drawable.ic_play_circle_outline_white_24dp)
                     .into(mPlayPause);
         }
         mIsPlaying = isPlaying;
