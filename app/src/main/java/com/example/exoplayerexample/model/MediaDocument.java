@@ -14,6 +14,9 @@ public class MediaDocument {
     private String fieldMediaUrl;
     private String fieldDescription;
     private Date fieldDateAdded;
+    private String fieldArtistId;
+    private String fieldMediaImage;
+
 
     public String getFieldMediaId() {
         return fieldMediaId;
@@ -62,4 +65,22 @@ public class MediaDocument {
     public void setFieldDateAdded(Date fieldDateAdded) {
         this.fieldDateAdded = fieldDateAdded;
     }
+
+    public String getFieldArtistId() {
+        return fieldArtistId;
+    }
+
+    public String getFieldMediaImage() {
+        return fieldMediaImage;
+    }
+
+    public void setFieldMediaImage(String fieldMediaImage) {
+        this.fieldMediaImage = fieldMediaImage;
+    }
+
+    public void setFieldArtistId(String fieldArtistId) {
+        this.fieldArtistId = fieldArtistId;
+    }
+
+
 }

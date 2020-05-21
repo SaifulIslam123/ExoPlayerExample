@@ -58,8 +58,6 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
     private RecyclerView mRecyclerView;
     private PlaylistRecyclerAdapter mAdapter;
     private ArrayList<MediaMetadataCompat> mainMediaDocumentArrayList = new ArrayList<>();
-    private MediaMetadataCompat mSelectedMedia;
-
 
 
     @Override
@@ -88,12 +86,12 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
             artist.setArtist_id("DmkWVyfXHkc3GC7nIfRh");
             artist.setImage("https://i.imgur.com/DvpvklR.png");
         }
-        
+
         initRecyclerView();
     }
 
     private void initRecyclerView() {
-      //  mIMainActivity.hideProgressBar();
+        //  mIMainActivity.hideProgressBar();
         mAdapter.notifyDataSetChanged();
 
     }
@@ -112,8 +110,20 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
         }
     }
 
+    //Recyclerview item click handle method
     @Override
     public void onMediaSelected(int position) {
+
+        //TODO: start playing music
+
+        getMyApplicationInstance().setMediaItems(mainMediaDocumentArrayList);
+        mAdapter.setSelectedIndex(position);
+
+        onMediaSelected(
+                mainMediaDocumentArrayList.get(position).getDescription().getMediaId(), // playlist_id = media_id
+                mainMediaDocumentArrayList.get(position),
+                position);
+        saveLastPlayedSongProperties(mainMediaDocumentArrayList.get(position));
 
     }
 
@@ -121,8 +131,13 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
 
     }
 
-    private void saveLastPlayedSongProperties() {
+    private void saveLastPlayedSongProperties(MediaMetadataCompat mediaItem) {
+        // NOTE: Normally you'd do this with a cache
 
+        getMyPreferenceManager().savePlaylistId(mediaItem.getDescription().getMediaId()); // playlist id is same as media id
+        getMyPreferenceManager().saveLastPlayedArtist(mediaItem.getDescription().getMediaId());
+        getMyPreferenceManager().saveLastPlayedArtistImage(mediaItem.getDescription().getIconUri().toString());
+        getMyPreferenceManager().saveLastPlayedMedia(mediaItem.getDescription().getMediaId());
 
     }
 
@@ -130,16 +145,38 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
 
         MediaDocument mediaDocument = new MediaDocument();
         mediaDocument.setFieldArtist("Andy Largo");
+        mediaDocument.setFieldArtistId("largoo_007");
         mediaDocument.setFieldDateAdded(new Date());
         mediaDocument.setFieldDescription("Andy Largo L.O.T.S. Lechfeld, Bavaria 31-10-2018");
         mediaDocument.setFieldMediaId("FJYw5g2JgWuoXHoiEeyi");
-        mediaDocument.setFieldMediaUrl("https://feeds.soundcloud.com/stream/540920376-techno-live-sets-andy-largo-lots-lechfeld-bavaria-31-10-2018.mp3");
+        mediaDocument.setFieldMediaUrl("https://bitmovin-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8");
         mediaDocument.setFieldTitle("Andy Largo L.O.T.S. Lechfeld, Bavaria");
+        mediaDocument.setFieldMediaImage("https://i.imgur.com/DvpvklR.png");
 
         mainMediaDocumentArrayList.add(addToMediaList(mediaDocument));
 
 
     }
+    /**
+     * Translate the Firestore data into something the MediaBrowserService can deal with (MediaMetaDataCompat objects)
+     *
+     * @param document
+     */
+    private MediaMetadataCompat addToMediaList(MediaDocument document) {
+
+        MediaMetadataCompat media = new MediaMetadataCompat.Builder()
+                .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, document.getFieldMediaId())
+                .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, document.getFieldArtist())
+                .putString(MediaMetadataCompat.METADATA_KEY_TITLE, document.getFieldTitle())
+                .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_URI, document.getFieldMediaUrl())
+                .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_DESCRIPTION, document.getFieldDescription())
+                .putString(MediaMetadataCompat.METADATA_KEY_DATE, document.getFieldDateAdded().toString())
+                .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON_URI, document.getFieldMediaImage())
+                .build();
+
+        return media;
+    }
+
 
     private void initUpdateUIBroadcastReceiver() {
         IntentFilter intentFilter = new IntentFilter();
@@ -328,26 +365,6 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
         mMyApplication.setMediaItems(mediaItems);
         mMediaBrowserHelper.onStart(mWasConfigurationChange);
         hideProgressBar();
-    }
-
-    /**
-     * Translate the Firestore data into something the MediaBrowserService can deal with (MediaMetaDataCompat objects)
-     *
-     * @param document
-     */
-    private MediaMetadataCompat addToMediaList(MediaDocument document) {
-
-        MediaMetadataCompat media = new MediaMetadataCompat.Builder()
-                .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, document.getFieldMediaId())
-                .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, document.getFieldArtist())
-                .putString(MediaMetadataCompat.METADATA_KEY_TITLE, document.getFieldTitle())
-                .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_URI, document.getFieldMediaUrl())
-                .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_DESCRIPTION, document.getFieldDescription())
-                .putString(MediaMetadataCompat.METADATA_KEY_DATE, document.getFieldDateAdded().toString())
-               .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON_URI, getMyPreferenceManager().getLastPlayedArtistImage())
-                .build();
-
-        return media;
     }
 
 
