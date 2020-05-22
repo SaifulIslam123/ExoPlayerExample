@@ -154,7 +154,7 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
         mediaDocument.setFieldMediaUrl("https://bitmovin-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8");
         mediaDocument.setFieldTitle("Andy Largo L.O.T.S. Lechfeld, Bavaria");
         mediaDocument.setFieldMediaImage("https://i.imgur.com/DvpvklR.png");
-        mediaDocument.setFieldMediaDuration(198000);
+        mediaDocument.setFieldMediaDuration(210000);
 
         MediaDocument mediaDocument2 = new MediaDocument();
         mediaDocument2.setFieldArtist("Bruno mars");
@@ -165,7 +165,7 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
         mediaDocument2.setFieldMediaUrl("http://playertest.longtailvideo.com/adaptive/bbbfull/bbbfull.m3u8");
         mediaDocument2.setFieldTitle("Bruno mars song , stay away from me");
         mediaDocument2.setFieldMediaImage("https://goo.gl/32YN2B");
-        mediaDocument2.setFieldMediaDuration(573600);
+        mediaDocument2.setFieldMediaDuration(596000);
 
         mainMediaDocumentArrayList.add(addToMediaList(mediaDocument));
         mainMediaDocumentArrayList.add(addToMediaList(mediaDocument2));

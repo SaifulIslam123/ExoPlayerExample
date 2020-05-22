@@ -113,30 +113,9 @@ public class MediaControllerFragment extends Fragment implements
     }
 
     public void setMediaDurationText(long duration) {
-     /*   String time = Utils.convertMiliSecToMinutes(duration);
-        if (time != null)
-            mediaDurationTV.setText(time);
-        else
-            mediaDurationTV.setText("");*/
-
-       /* String time = "";
-
-        if (Utils.getHourFromMillisSec(duration) > 0)
-            time = Utils.getHourFromMillisSec(duration) + ":";
-
-        time = time + Utils.getMinutesFromMillisSec(duration) + ":";
-        time = time + Utils.getSecFromMillisSec(duration);
-        mediaDurationTV.setText(time);
-*/
-
         mediaDurationTV.setText(Utils.milliSecondsToTimer(duration));
-        setMediaProgressDuration(312313);
     }
-
-    public void setMediaProgressDuration(long duration){
-        mediaProgressDurationTV.setText("1:2");
-    }
-
+    
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
