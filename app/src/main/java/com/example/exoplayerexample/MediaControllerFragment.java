@@ -29,7 +29,7 @@ public class MediaControllerFragment extends Fragment implements
 
     // UI Components
     private TextView mSongTitle;
-    private ImageView mPlayPause;
+    private ImageView mPlayPause, previousImageView, nextImageView;
     private MediaSeekBar mSeekBarAudio;
 
 
@@ -57,8 +57,12 @@ public class MediaControllerFragment extends Fragment implements
         mSongTitle = view.findViewById(R.id.media_song_title);
         mPlayPause = view.findViewById(R.id.play_pause);
         mSeekBarAudio = view.findViewById(R.id.seekbar_audio);
+        previousImageView = view.findViewById(R.id.previousImageView);
+        nextImageView = view.findViewById(R.id.nextImageView);
 
         mPlayPause.setOnClickListener(this);
+        previousImageView.setOnClickListener(this);
+        nextImageView.setOnClickListener(this);
 
         if (savedInstanceState != null) {
             mSelectedMedia = savedInstanceState.getParcelable("selected_media");
@@ -77,6 +81,12 @@ public class MediaControllerFragment extends Fragment implements
     public void onClick(View view) {
         if (view.getId() == R.id.play_pause) {
             iHlsAudioStreamingActivity.playPause();
+        }
+        if (view.getId() == R.id.previousImageView) {
+            iHlsAudioStreamingActivity.playPreviousMedia();
+        }
+        if (view.getId() == R.id.nextImageView) {
+            iHlsAudioStreamingActivity.playNextMedia();
         }
     }
 

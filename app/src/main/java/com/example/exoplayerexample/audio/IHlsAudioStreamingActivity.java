@@ -12,13 +12,20 @@ public interface IHlsAudioStreamingActivity {
 
     void showPrgressBar();
 
-    default void onCategorySelected(String category){}
+    default void onCategorySelected(String category) {
+    }
 
-    default void onArtistSelected(String category, Artist artist){}
+    default void onArtistSelected(String category, Artist artist) {
+    }
 
-    default void setActionBarTitle(String title) {}
+    default void setActionBarTitle(String title) {
+    }
 
     void playPause();
+
+    void playNextMedia();
+
+    void playPreviousMedia();
 
     MyApplication getMyApplicationInstance();
 

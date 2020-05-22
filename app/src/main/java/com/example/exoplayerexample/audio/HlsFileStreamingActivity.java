@@ -115,7 +115,7 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
     public void onMediaSelected(int position) {
 
         //TODO: start playing music
-        Log.d(TAG, "onMediaSelected: "+"Recyclerview item click handle method");
+        Log.d(TAG, "onMediaSelected: " + "Recyclerview item click handle method");
 
         getMyApplicationInstance().setMediaItems(mainMediaDocumentArrayList);
         mAdapter.setSelectedIndex(position);
@@ -243,7 +243,6 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
         registerReceiver(mSeekbarBroadcastReceiver, intentFilter);
     }
 
-
     @Override
     public void onMetadataChanged(MediaMetadataCompat metadata) {
         Log.d(TAG, "onMetadataChanged: called");
@@ -316,7 +315,7 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
 
     @Override
     public void playPause() {
-        Log.d(TAG, "playPause: "+"mOnAppOpen + "+mOnAppOpen+" mIsPlaying"+getMyPreferenceManager().isLastPlayedSongRunning());
+        Log.d(TAG, "playPause: " + "mOnAppOpen + " + mOnAppOpen + " mIsPlaying" + getMyPreferenceManager().isLastPlayedSongRunning());
         if (mOnAppOpen) {
             if (getMyPreferenceManager().isLastPlayedSongRunning()) {
                 mMediaBrowserHelper.getTransportControls().pause();
@@ -336,6 +335,29 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
         }
     }
 
+    @Override
+    public void playPreviousMedia() {
+
+        int previousSongIndex = mAdapter.getSelectedIndex() - 1;
+       // Toast.makeText(this, previousSongIndex + "", Toast.LENGTH_LONG).show();
+        if (previousSongIndex <= 0) {
+            onMediaSelected(0);
+        } else {
+            onMediaSelected(previousSongIndex);
+        }
+
+    }
+
+    @Override
+    public void playNextMedia() {
+        int nextSongIndex = mAdapter.getSelectedIndex() + 1;
+      //  Toast.makeText(this, nextSongIndex + "", Toast.LENGTH_LONG).show();
+        if (nextSongIndex ==mAdapter.getItemCount()) {
+            onMediaSelected(0);
+        } else {
+            onMediaSelected(nextSongIndex);
+        }
+    }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
