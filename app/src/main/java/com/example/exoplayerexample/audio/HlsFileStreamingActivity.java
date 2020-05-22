@@ -163,7 +163,7 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
         mediaDocument2.setFieldMediaId("50000016");
         mediaDocument2.setFieldMediaUrl("http://playertest.longtailvideo.com/adaptive/bbbfull/bbbfull.m3u8");
         mediaDocument2.setFieldTitle("Bruno mars song , stay away from me");
-        mediaDocument2.setFieldMediaImage("https://i.imgur.com/DvpvklR.png");
+        mediaDocument2.setFieldMediaImage("https://goo.gl/32YN2B");
 
         mainMediaDocumentArrayList.add(addToMediaList(mediaDocument));
         mainMediaDocumentArrayList.add(addToMediaList(mediaDocument2));

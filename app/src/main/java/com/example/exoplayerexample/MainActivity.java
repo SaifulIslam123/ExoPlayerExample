@@ -29,7 +29,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //startActivity(new Intent(MainActivity.this, AudioStreamingActivity.class));
-                startActivity(new Intent(MainActivity.this, HlsFileStreamingActivity.class));
+                startActivity(new Intent(MainActivity.this, HlsFileStreamingActivity.class)
+                .setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP));
             }
         });
 
