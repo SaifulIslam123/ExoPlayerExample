@@ -154,7 +154,7 @@ public class MediaService extends MediaBrowserServiceCompat {
                 mQueueIndex = extras.getInt(MEDIA_QUEUE_POSITION);
             }
             mMyPrefManager.saveQueuePosition(mQueueIndex);
-            mMyPrefManager.saveLastPlayedMedia(mPreparedMedia.getDescription().getMediaId());
+            mMyPrefManager.setLastPlayedMediaId(mPreparedMedia.getDescription().getMediaId());
         }
 
         @Override
@@ -202,7 +202,7 @@ public class MediaService extends MediaBrowserServiceCompat {
 
             mPlayback.playFromMedia(mPreparedMedia);
             mMyPrefManager.saveQueuePosition(mQueueIndex);
-            mMyPrefManager.saveLastPlayedMedia(mPreparedMedia.getDescription().getMediaId());
+            mMyPrefManager.setLastPlayedMediaId(mPreparedMedia.getDescription().getMediaId());
         }
 
         @Override

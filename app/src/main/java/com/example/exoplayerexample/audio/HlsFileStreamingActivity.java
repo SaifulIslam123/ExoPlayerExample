@@ -136,10 +136,9 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
     private void saveLastPlayedSongProperties(MediaMetadataCompat mediaItem) {
         // NOTE: Normally you'd do this with a cache
 
-        getMyPreferenceManager().savePlaylistId(mediaItem.getDescription().getMediaId()); // playlist id is same as media id
         getMyPreferenceManager().saveLastPlayedArtist(mediaItem.getDescription().getMediaId());
         getMyPreferenceManager().saveLastPlayedArtistImage(mediaItem.getDescription().getIconUri().toString());
-        getMyPreferenceManager().saveLastPlayedMedia(mediaItem.getDescription().getMediaId());
+        getMyPreferenceManager().setLastPlayedMediaId(mediaItem.getDescription().getMediaId());
 
     }
 

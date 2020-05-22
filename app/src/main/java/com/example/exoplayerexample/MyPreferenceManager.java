@@ -50,7 +50,7 @@ public class MyPreferenceManager {
         editor.apply();
     }
 
-    public void saveLastPlayedMedia(String mediaId) {
+    public void setLastPlayedMediaId(String mediaId) {
         SharedPreferences.Editor editor = mPreferences.edit();
         editor.putString(NOW_PLAYING, mediaId);
         editor.apply();
