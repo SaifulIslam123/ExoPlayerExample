@@ -49,7 +49,7 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
     private MediaBrowserHelper mMediaBrowserHelper;
     private MyApplication mMyApplication;
     private MyPreferenceManager mMyPrefManager;
-    private boolean mIsPlaying;
+
     private SeekBarBroadcastReceiver mSeekbarBroadcastReceiver;
     private UpdateUIBroadcastReceiver mUpdateUIBroadcastReceiver;
     private boolean mOnAppOpen;
@@ -115,6 +115,7 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
     public void onMediaSelected(int position) {
 
         //TODO: start playing music
+        Log.d(TAG, "onMediaSelected: "+"Recyclerview item click handle method");
 
         getMyApplicationInstance().setMediaItems(mainMediaDocumentArrayList);
         mAdapter.setSelectedIndex(position);
@@ -258,9 +259,9 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
     @Override
     public void onPlaybackStateChanged(PlaybackStateCompat state) {
         Log.d(TAG, "onPlaybackStateChanged: called.");
-        mIsPlaying = state != null &&
+        boolean mIsPlaying = state != null &&
                 state.getState() == PlaybackStateCompat.STATE_PLAYING;
-        getMyPreferenceManager().setLastPlayedSongRunningState(mIsPlaying);
+        getMyPreferenceManager().setIsLastPlayedSongRunning(mIsPlaying);
 
         // update UI
         if (getMediaControllerFragment() != null) {
@@ -283,16 +284,18 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
         if (mediaItem != null) {
             Log.d(TAG, "onMediaSelected: CALLED: " + mediaItem.getDescription().getMediaId());
 
-            String currentPlaylistId = getMyPreferenceManager().getPlaylistId();
+            String currentPlaylistId = getMyPreferenceManager().getLastPlayedMediaId();
 
             Bundle bundle = new Bundle();
             bundle.putInt(MEDIA_QUEUE_POSITION, queuePosition);
             if (playlistId.equals(currentPlaylistId)) {
                 mMediaBrowserHelper.getTransportControls().playFromMediaId(mediaItem.getDescription().getMediaId(), bundle);
+                getMyPreferenceManager().setIsLastPlayedSongRunning(true);
             } else {
                 bundle.putBoolean(QUEUE_NEW_PLAYLIST, true); // let the player know this is a new playlist
                 mMediaBrowserHelper.subscribeToNewPlaylist(currentPlaylistId, playlistId);
                 mMediaBrowserHelper.getTransportControls().playFromMediaId(mediaItem.getDescription().getMediaId(), bundle);
+                getMyPreferenceManager().setIsLastPlayedSongRunning(true);
             }
 
             mOnAppOpen = true;
@@ -314,17 +317,18 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
 
     @Override
     public void playPause() {
+        Log.d(TAG, "playPause: "+"mOnAppOpen + "+mOnAppOpen+" mIsPlaying"+getMyPreferenceManager().isLastPlayedSongRunning());
         if (mOnAppOpen) {
-            if (mIsPlaying) {
+            if (getMyPreferenceManager().isLastPlayedSongRunning()) {
                 mMediaBrowserHelper.getTransportControls().pause();
             } else {
                 mMediaBrowserHelper.getTransportControls().play();
             }
         } else {
-            if (!getMyPreferenceManager().getPlaylistId().equals("")) {
+            if (!getMyPreferenceManager().getLastPlayedMediaId().equals("")) {
                 onMediaSelected(
-                        getMyPreferenceManager().getPlaylistId(),
-                        mMyApplication.getMediaItem(getMyPreferenceManager().getLastPlayedMedia()),
+                        getMyPreferenceManager().getLastPlayedMediaId(),
+                        mMyApplication.getMediaItem(getMyPreferenceManager().getLastPlayedMediaId()),
                         getMyPreferenceManager().getQueuePosition()
                 );
             } else {
@@ -344,7 +348,7 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
     public void onStart() {
         super.onStart();
 
-        if (!getMyPreferenceManager().getPlaylistId().equals("")) {
+        if (!getMyPreferenceManager().getLastPlayedMediaId().equals("")) {
             prepareLastPlayedMedia();
         } else {
             mMediaBrowserHelper.onStart(mWasConfigurationChange);
@@ -371,10 +375,11 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
 
         for (MediaMetadataCompat mediaDocument1 : mainMediaDocumentArrayList) {
             mediaItems.add(mediaDocument1);
-            if (mediaDocument1.getDescription().getMediaId().equals(getMyPreferenceManager().getLastPlayedMedia())) {
+            if (mediaDocument1.getDescription().getMediaId().equals(getMyPreferenceManager().getLastPlayedMediaId())) {
                 getMediaControllerFragment().setMediaTitle(mediaDocument1);
-                getMediaControllerFragment().setIsPlaying(getMyPreferenceManager().getLastPlayedSongRunningState());
+                getMediaControllerFragment().setIsPlaying(getMyPreferenceManager().isLastPlayedSongRunning());
                 updateUI(mediaDocument1);
+                mOnAppOpen = true;
             }
         }
         onFinishedGettingPreviousSessionData(mediaItems);

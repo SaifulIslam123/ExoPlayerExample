@@ -56,17 +56,17 @@ public class MyPreferenceManager {
         editor.apply();
     }
 
-    public void setLastPlayedSongRunningState(boolean state) {
+    public void setIsLastPlayedSongRunning(boolean state) {
         SharedPreferences.Editor editor = mPreferences.edit();
         editor.putBoolean(LAST_PLAYED_SONG_RUNNING_STATE, state);
         editor.apply();
     }
 
-    public Boolean getLastPlayedSongRunningState(){
+    public Boolean isLastPlayedSongRunning(){
         return mPreferences.getBoolean(LAST_PLAYED_SONG_RUNNING_STATE,false);
     }
 
-    public String getLastPlayedMedia() {
+    public String getLastPlayedMediaId() {
         return mPreferences.getString(NOW_PLAYING, "");
     }
 

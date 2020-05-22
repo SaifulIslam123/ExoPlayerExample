@@ -21,8 +21,7 @@ import com.example.exoplayerexample.mediaUtils.MediaSeekBar;
 
 
 public class MediaControllerFragment extends Fragment implements
-        View.OnClickListener
-{
+        View.OnClickListener {
 
 
     private static final String TAG = "MediaControllerFragment";
@@ -61,33 +60,32 @@ public class MediaControllerFragment extends Fragment implements
 
         mPlayPause.setOnClickListener(this);
 
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             mSelectedMedia = savedInstanceState.getParcelable("selected_media");
-            if(mSelectedMedia != null){
+            if (mSelectedMedia != null) {
                 setMediaTitle(mSelectedMedia);
                 setIsPlaying(savedInstanceState.getBoolean("is_playing"));
             }
         }
     }
 
-    public MediaSeekBar getMediaSeekBar(){
+    public MediaSeekBar getMediaSeekBar() {
         return mSeekBarAudio;
     }
 
     @Override
     public void onClick(View view) {
-        if(view.getId() == R.id.play_pause){
+        if (view.getId() == R.id.play_pause) {
             iHlsAudioStreamingActivity.playPause();
         }
     }
 
-    public void setIsPlaying(boolean isPlaying){
-        if(isPlaying){
+    public void setIsPlaying(boolean isPlaying) {
+        if (isPlaying) {
             Glide.with(getActivity())
                     .load(R.drawable.ic_pause_circle_outline_white_24dp)
                     .into(mPlayPause);
-        }
-        else{
+        } else {
             Glide.with(getActivity())
                     .load(R.drawable.ic_play_circle_outline_white_24dp)
                     .into(mPlayPause);
@@ -95,7 +93,7 @@ public class MediaControllerFragment extends Fragment implements
         mIsPlaying = isPlaying;
     }
 
-    public void setMediaTitle(MediaMetadataCompat mediaItem){
+    public void setMediaTitle(MediaMetadataCompat mediaItem) {
         mSelectedMedia = mediaItem;
         mSongTitle.setText(mediaItem.getDescription().getTitle());
     }

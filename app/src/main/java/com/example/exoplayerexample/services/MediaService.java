@@ -270,20 +270,25 @@ public class MediaService extends MediaBrowserServiceCompat {
             // Manage the started state of this service.
             switch (state.getState()) {
                 case PlaybackStateCompat.STATE_PLAYING:
+                    Log.d(TAG, "onPlaybackStateChange: STATE_PLAYING");
                     mServiceManager.updateNotification(
                             state,
                             mPlayback.getCurrentMedia().getString(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON_URI)
                     );
+                    mMyPrefManager.setIsLastPlayedSongRunning(true);
                     break;
                 case PlaybackStateCompat.STATE_PAUSED:
+                    Log.d(TAG, "onPlaybackStateChange: STATE_PAUSED");
                     mServiceManager.updateNotification(
                             state,
                             mPlayback.getCurrentMedia().getString(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON_URI)
                     );
+                    mMyPrefManager.setIsLastPlayedSongRunning(false);
                     break;
                 case PlaybackStateCompat.STATE_STOPPED:
                     Log.d(TAG, "onPlaybackStateChange: STOPPED.");
                     mServiceManager.moveServiceOutOfStartedState();
+                    mMyPrefManager.setIsLastPlayedSongRunning(false);
                     break;
             }
         }
