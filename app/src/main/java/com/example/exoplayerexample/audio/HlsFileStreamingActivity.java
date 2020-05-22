@@ -330,7 +330,8 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
                         getMyPreferenceManager().getQueuePosition()
                 );
             } else {
-                Toast.makeText(this, "playPause select something to play", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "playPause select something to play", Toast.LENGTH_SHORT).show();
+                onMediaSelected(0);
             }
         }
     }
