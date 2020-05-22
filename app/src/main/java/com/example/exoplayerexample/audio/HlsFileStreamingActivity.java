@@ -447,5 +447,7 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
         getSupportActionBar().setTitle(title);
     }
 
-
+public void seekBarProgress(long progress){
+        getMediaControllerFragment().setCurrentProgess(progress);
+}
 }

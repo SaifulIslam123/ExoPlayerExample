@@ -11,6 +11,8 @@ import android.widget.SeekBar;
 
 import androidx.appcompat.widget.AppCompatSeekBar;
 
+import com.example.exoplayerexample.audio.HlsFileStreamingActivity;
+
 /**
  * SeekBar that can be used with a {@link MediaSessionCompat} to track and seek in playing
  * media.
@@ -27,7 +29,7 @@ public class MediaSeekBar extends AppCompatSeekBar {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             Log.d(TAG, "onProgressChanged: "+getProgress());
-
+            ((HlsFileStreamingActivity)getContext()).seekBarProgress(progress);
         }
 
         @Override

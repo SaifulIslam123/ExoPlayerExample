@@ -1,6 +1,7 @@
 package com.example.exoplayerexample;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.media.MediaMetadataCompat;
 import android.util.Log;
@@ -147,5 +148,9 @@ public class MediaControllerFragment extends Fragment implements
         super.onSaveInstanceState(outState);
         outState.putParcelable("selected_media", mSelectedMedia);
         outState.putBoolean("is_playing", mIsPlaying);
+    }
+
+    public void setCurrentProgess(long progress) {
+        mediaProgressDurationTV.setText(Utils.milliSecondsToTimer(progress));
     }
 }
