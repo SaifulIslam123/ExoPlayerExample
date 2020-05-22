@@ -26,6 +26,8 @@ public class MediaSeekBar extends AppCompatSeekBar {
     private SeekBar.OnSeekBarChangeListener mOnSeekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            Log.d(TAG, "onProgressChanged: "+getProgress());
+
         }
 
         @Override

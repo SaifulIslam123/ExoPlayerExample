@@ -8,7 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,7 +30,7 @@ public class MediaControllerFragment extends Fragment implements
 
 
     // UI Components
-    private TextView mSongTitle, mediaDurationTV;
+    private TextView mSongTitle, mediaDurationTV, mediaProgressDurationTV;
     private ImageView mPlayPause, previousImageView, nextImageView;
     private MediaSeekBar mSeekBarAudio;
 
@@ -60,7 +62,7 @@ public class MediaControllerFragment extends Fragment implements
         previousImageView = view.findViewById(R.id.previousImageView);
         nextImageView = view.findViewById(R.id.nextImageView);
         mediaDurationTV = view.findViewById(R.id.mediaDurationTV);/**/
-
+        mediaProgressDurationTV = view.findViewById(R.id.mediaProgressDurationTV);
         mPlayPause.setOnClickListener(this);
         previousImageView.setOnClickListener(this);
         nextImageView.setOnClickListener(this);
@@ -110,23 +112,28 @@ public class MediaControllerFragment extends Fragment implements
     }
 
     public void setMediaDurationText(long duration) {
-        /*String time = Utils.convertMiliSecToMinutes(duration);
+     /*   String time = Utils.convertMiliSecToMinutes(duration);
         if (time != null)
             mediaDurationTV.setText(time);
         else
             mediaDurationTV.setText("");*/
 
-        String time = "";
+       /* String time = "";
 
         if (Utils.getHourFromMillisSec(duration) > 0)
             time = Utils.getHourFromMillisSec(duration) + ":";
 
         time = time + Utils.getMinutesFromMillisSec(duration) + ":";
         time = time + Utils.getSecFromMillisSec(duration);
-
-
         mediaDurationTV.setText(time);
+*/
 
+        mediaDurationTV.setText(Utils.milliSecondsToTimer(duration));
+        setMediaProgressDuration(312313);
+    }
+
+    public void setMediaProgressDuration(long duration){
+        mediaProgressDurationTV.setText("1:2");
     }
 
     @Override
