@@ -1,15 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.example.exoplayerexample.mediaUtils.MediaSeekBar
-        android:id="@+id/seekbar_audio"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/black_border_top" />
+        android:background="@drawable/black_border_top">
+
+        <com.example.exoplayerexample.mediaUtils.MediaSeekBar
+            android:id="@+id/seekbar_audio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/mediaDurationTV"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/mediaDurationTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:padding="5dp"
+            android:textColor="@android:color/holo_blue_light"
+            android:textSize="15sp"
+            tools:text="123:123" />
+
+    </RelativeLayout>
 
 
     <RelativeLayout

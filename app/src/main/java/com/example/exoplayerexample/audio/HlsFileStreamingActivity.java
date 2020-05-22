@@ -154,6 +154,7 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
         mediaDocument.setFieldMediaUrl("https://bitmovin-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8");
         mediaDocument.setFieldTitle("Andy Largo L.O.T.S. Lechfeld, Bavaria");
         mediaDocument.setFieldMediaImage("https://i.imgur.com/DvpvklR.png");
+        mediaDocument.setFieldMediaDuration(198000);
 
         MediaDocument mediaDocument2 = new MediaDocument();
         mediaDocument2.setFieldArtist("Bruno mars");
@@ -164,6 +165,7 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
         mediaDocument2.setFieldMediaUrl("http://playertest.longtailvideo.com/adaptive/bbbfull/bbbfull.m3u8");
         mediaDocument2.setFieldTitle("Bruno mars song , stay away from me");
         mediaDocument2.setFieldMediaImage("https://goo.gl/32YN2B");
+        mediaDocument2.setFieldMediaDuration(573600);
 
         mainMediaDocumentArrayList.add(addToMediaList(mediaDocument));
         mainMediaDocumentArrayList.add(addToMediaList(mediaDocument2));
@@ -186,6 +188,7 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
                 .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_DESCRIPTION, document.getFieldDescription())
                 .putString(MediaMetadataCompat.METADATA_KEY_DATE, document.getFieldDateAdded().toString())
                 .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON_URI, document.getFieldMediaImage())
+                .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, document.getFieldMediaDuration() )
                 .build();
 
         return media;
@@ -252,6 +255,7 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
 
         // Do stuff with new Metadata
         getMediaControllerFragment().setMediaTitle(metadata);
+        getMediaControllerFragment().setMediaDurationText(metadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION));
     }
 
     @Override
@@ -399,6 +403,7 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
             mediaItems.add(mediaDocument1);
             if (mediaDocument1.getDescription().getMediaId().equals(getMyPreferenceManager().getLastPlayedMediaId())) {
                 getMediaControllerFragment().setMediaTitle(mediaDocument1);
+                getMediaControllerFragment().setMediaDurationText(mediaDocument1.getLong(MediaMetadataCompat.METADATA_KEY_DURATION));
                 getMediaControllerFragment().setIsPlaying(getMyPreferenceManager().isLastPlayedSongRunning());
                 updateUI(mediaDocument1);
                 mOnAppOpen = true;

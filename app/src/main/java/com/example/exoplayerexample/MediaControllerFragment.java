@@ -28,7 +28,7 @@ public class MediaControllerFragment extends Fragment implements
 
 
     // UI Components
-    private TextView mSongTitle;
+    private TextView mSongTitle, mediaDurationTV;
     private ImageView mPlayPause, previousImageView, nextImageView;
     private MediaSeekBar mSeekBarAudio;
 
@@ -59,6 +59,7 @@ public class MediaControllerFragment extends Fragment implements
         mSeekBarAudio = view.findViewById(R.id.seekbar_audio);
         previousImageView = view.findViewById(R.id.previousImageView);
         nextImageView = view.findViewById(R.id.nextImageView);
+        mediaDurationTV = view.findViewById(R.id.mediaDurationTV);/**/
 
         mPlayPause.setOnClickListener(this);
         previousImageView.setOnClickListener(this);
@@ -106,6 +107,26 @@ public class MediaControllerFragment extends Fragment implements
     public void setMediaTitle(MediaMetadataCompat mediaItem) {
         mSelectedMedia = mediaItem;
         mSongTitle.setText(mediaItem.getDescription().getTitle());
+    }
+
+    public void setMediaDurationText(long duration) {
+        /*String time = Utils.convertMiliSecToMinutes(duration);
+        if (time != null)
+            mediaDurationTV.setText(time);
+        else
+            mediaDurationTV.setText("");*/
+
+        String time = "";
+
+        if (Utils.getHourFromMillisSec(duration) > 0)
+            time = Utils.getHourFromMillisSec(duration) + ":";
+
+        time = time + Utils.getMinutesFromMillisSec(duration) + ":";
+        time = time + Utils.getSecFromMillisSec(duration);
+
+
+        mediaDurationTV.setText(time);
+
     }
 
     @Override

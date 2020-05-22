@@ -15,6 +15,12 @@
  */
 package com.example.exoplayerexample;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
+
 public final class Utils {
 
     public static final String PLAYBACK_CHANNEL_ID = "playback_channel";
@@ -24,6 +30,28 @@ public final class Utils {
     public static final int DOWNLOAD_NOTIFICATION_ID = 2;
     public static final String PREF_NAME = "pref";
     public static final String AUDIO_SINGLETON_OBJ = "audio obj";
+
+    public static String convertMiliSecToMinutes(long millis) {
+
+        try {
+            DateFormat formatter = new SimpleDateFormat("hh:mm:ss", Locale.US);
+            formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+            return formatter.format(new Date(millis));
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static int getHourFromMillisSec(long millis){
+       return  (int) ((millis / 1000) / 3600);
+    }
+
+    public static int getMinutesFromMillisSec(long millis){
+            return (int) (((millis / 1000) / 60) % 60);
+    }
+    public static int getSecFromMillisSec(long millis){
+        return (int) ((millis / 1000) % 60);
+    }
 
 
 }

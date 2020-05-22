@@ -16,6 +16,7 @@ public class MediaDocument {
     private Date fieldDateAdded;
     private String fieldArtistId;
     private String fieldMediaImage;
+    private long fieldMediaDuration;
 
 
     public String getFieldMediaId() {
@@ -82,5 +83,11 @@ public class MediaDocument {
         this.fieldArtistId = fieldArtistId;
     }
 
+    public long getFieldMediaDuration() {
+        return fieldMediaDuration;
+    }
 
+    public void setFieldMediaDuration(long fieldMediaDuration) {
+        this.fieldMediaDuration = fieldMediaDuration;
+    }
 }
