@@ -82,10 +82,18 @@ public class MediaService extends MediaBrowserServiceCompat {
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
-        Log.d(TAG, "onTaskRemoved: stopped");
         super.onTaskRemoved(rootIntent);
-       // mPlayback.stop();
+        Log.d(TAG, "onTaskRemoved: stopped " + mPlayback.isPlaying());
+
+        if (!mPlayback.isPlaying()) {
+            mMyPrefManager.setLastPlayedMediaProgressValue(0);
+            mMyPrefManager.setLastPlayedMediaSeekbarMaxValue(0);
+        }
+
+        // mPlayback.stop();
         //stopSelf();
+
+
     }
 
     @Override
@@ -100,7 +108,7 @@ public class MediaService extends MediaBrowserServiceCompat {
     public BrowserRoot onGetRoot(@NonNull String s, int i, @Nullable Bundle bundle) {
 
         Log.d(TAG, "onGetRoot: called. ");
-        if(s.equals(getApplicationContext().getPackageName())){
+        if (s.equals(getApplicationContext().getPackageName())) {
 
             // Allowed to browse media
             return new BrowserRoot("some_real_playlist", null); // return no media
@@ -127,7 +135,7 @@ public class MediaService extends MediaBrowserServiceCompat {
         private int mQueueIndex = -1;
         private MediaMetadataCompat mPreparedMedia;
 
-        private void resetPlaylist(){
+        private void resetPlaylist() {
             mPlaylist.clear();
             mQueueIndex = -1;
         }
@@ -135,7 +143,7 @@ public class MediaService extends MediaBrowserServiceCompat {
         @Override
         public void onPlayFromMediaId(String mediaId, Bundle extras) {
             Log.d(TAG, "onPlayFromMediaId: CALLED.");
-            if(extras.getBoolean(QUEUE_NEW_PLAYLIST, false)){
+            if (extras.getBoolean(QUEUE_NEW_PLAYLIST, false)) {
                 resetPlaylist();
             }
 
@@ -147,10 +155,9 @@ public class MediaService extends MediaBrowserServiceCompat {
             mPlayback.playFromMedia(mPreparedMedia);
 
             int newQueuePosition = extras.getInt(MEDIA_QUEUE_POSITION, -1);
-            if(newQueuePosition == -1){
+            if (newQueuePosition == -1) {
                 mQueueIndex++;
-            }
-            else{
+            } else {
                 mQueueIndex = extras.getInt(MEDIA_QUEUE_POSITION);
             }
             mMyPrefManager.saveQueuePosition(mQueueIndex);
@@ -320,38 +327,37 @@ public class MediaService extends MediaBrowserServiceCompat {
             public ServiceManager() {
             }
 
-            public void updateNotification(PlaybackStateCompat state, String displayImageUri){
+            public void updateNotification(PlaybackStateCompat state, String displayImageUri) {
                 mState = state;
 
-                if(!displayImageUri.equals(mDisplayImageUri)){
+                if (!displayImageUri.equals(mDisplayImageUri)) {
                     // download new bitmap
 
                     mAsyncTask = new GetArtistBitmapAsyncTask(
                             Glide.with(MediaService.this)
-                            .asBitmap()
-                            .load(displayImageUri)
-                            .listener(new RequestListener<Bitmap>() {
-                                @Override
-                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
-                                    return false;
-                                }
+                                    .asBitmap()
+                                    .load(displayImageUri)
+                                    .listener(new RequestListener<Bitmap>() {
+                                        @Override
+                                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
+                                            return false;
+                                        }
 
-                                @Override
-                                public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
-                                    return false;
-                                }
-                            }).submit(), this);
+                                        @Override
+                                        public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
+                                            return false;
+                                        }
+                                    }).submit(), this);
 
                     mAsyncTask.execute();
 
                     mDisplayImageUri = displayImageUri;
-                }
-                else{
+                } else {
                     displayNotification(mCurrentArtistBitmap);
                 }
             }
 
-            public void displayNotification(Bitmap bitmap){
+            public void displayNotification(Bitmap bitmap) {
 
                 // Manage the started state of this service.
                 Notification notification = null;
@@ -398,7 +404,7 @@ public class MediaService extends MediaBrowserServiceCompat {
 
     }
 
-    static class GetArtistBitmapAsyncTask extends AsyncTask<Void, Void, Bitmap>{
+    static class GetArtistBitmapAsyncTask extends AsyncTask<Void, Void, Bitmap> {
 
         private FutureTarget<Bitmap> mBitmap;
         private ICallback mICallback;
