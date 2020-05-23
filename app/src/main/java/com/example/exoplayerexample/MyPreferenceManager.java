@@ -8,6 +8,7 @@ import android.util.Log;
 import static com.example.exoplayerexample.Constants.LAST_ARTIST;
 import static com.example.exoplayerexample.Constants.LAST_ARTIST_IMAGE;
 import static com.example.exoplayerexample.Constants.LAST_CATEGORY;
+import static com.example.exoplayerexample.Constants.LAST_PLAYED_MEDIA_PROGRESS_VALUE;
 import static com.example.exoplayerexample.Constants.LAST_PLAYED_SONG_RUNNING_STATE;
 import static com.example.exoplayerexample.Constants.MEDIA_QUEUE_POSITION;
 import static com.example.exoplayerexample.Constants.NOW_PLAYING;
@@ -62,12 +63,22 @@ public class MyPreferenceManager {
         editor.apply();
     }
 
-    public Boolean isLastPlayedSongRunning(){
-        return mPreferences.getBoolean(LAST_PLAYED_SONG_RUNNING_STATE,false);
+    public Boolean isLastPlayedSongRunning() {
+        return mPreferences.getBoolean(LAST_PLAYED_SONG_RUNNING_STATE, false);
     }
 
     public String getLastPlayedMediaId() {
         return mPreferences.getString(NOW_PLAYING, "");
+    }
+
+    public void setLastPlayedMediaProgressValue(int progressValue) {
+        SharedPreferences.Editor editor = mPreferences.edit();
+        editor.putInt(LAST_PLAYED_MEDIA_PROGRESS_VALUE, progressValue);
+        editor.apply();
+    }
+
+    public int getLastPlayedMediaProgressValue() {
+        return mPreferences.getInt(LAST_PLAYED_MEDIA_PROGRESS_VALUE, 0);
     }
 
     public void saveLastPlayedArtist(String artist) {

@@ -188,7 +188,7 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
                 .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_DESCRIPTION, document.getFieldDescription())
                 .putString(MediaMetadataCompat.METADATA_KEY_DATE, document.getFieldDateAdded().toString())
                 .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON_URI, document.getFieldMediaImage())
-                .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, document.getFieldMediaDuration() )
+                .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, document.getFieldMediaDuration())
                 .build();
 
         return media;
@@ -205,6 +205,8 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
     @Override
     public void onMediaControllerConnected(MediaControllerCompat mediaController) {
         getMediaControllerFragment().getMediaSeekBar().setMediaController(mediaController);
+        Log.d(TAG, "onMediaControllerConnected: "+getMyPreferenceManager().getLastPlayedMediaProgressValue());
+        getMediaControllerFragment().getMediaSeekBar().setSeekBarProgress(getMyPreferenceManager().getLastPlayedMediaProgressValue());
     }
 
     @Override
@@ -302,7 +304,7 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
 
             mOnAppOpen = true;
         } else {
-            Toast.makeText(this, "onMediaSelected select something to play", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Select something to play", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -344,7 +346,7 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
     public void playPreviousMedia() {
 
         int previousSongIndex = mAdapter.getSelectedIndex() - 1;
-       // Toast.makeText(this, previousSongIndex + "", Toast.LENGTH_LONG).show();
+        // Toast.makeText(this, previousSongIndex + "", Toast.LENGTH_LONG).show();
         if (previousSongIndex <= 0) {
             onMediaSelected(0);
         } else {
@@ -356,8 +358,8 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
     @Override
     public void playNextMedia() {
         int nextSongIndex = mAdapter.getSelectedIndex() + 1;
-      //  Toast.makeText(this, nextSongIndex + "", Toast.LENGTH_LONG).show();
-        if (nextSongIndex ==mAdapter.getItemCount()) {
+        //  Toast.makeText(this, nextSongIndex + "", Toast.LENGTH_LONG).show();
+        if (nextSongIndex == mAdapter.getItemCount()) {
             onMediaSelected(0);
         } else {
             onMediaSelected(nextSongIndex);
@@ -407,6 +409,7 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
                 getMediaControllerFragment().setIsPlaying(getMyPreferenceManager().isLastPlayedSongRunning());
                 updateUI(mediaDocument1);
                 mOnAppOpen = true;
+
             }
         }
         onFinishedGettingPreviousSessionData(mediaItems);
@@ -447,7 +450,7 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
         getSupportActionBar().setTitle(title);
     }
 
-public void seekBarProgress(long progress){
+    public void seekBarProgress(long progress) {
         getMediaControllerFragment().setCurrentProgess(progress);
-}
+    }
 }

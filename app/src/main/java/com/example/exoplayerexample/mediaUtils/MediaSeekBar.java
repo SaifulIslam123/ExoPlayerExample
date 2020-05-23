@@ -28,8 +28,9 @@ public class MediaSeekBar extends AppCompatSeekBar {
     private SeekBar.OnSeekBarChangeListener mOnSeekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            Log.d(TAG, "onProgressChanged: "+getProgress());
-            ((HlsFileStreamingActivity)getContext()).seekBarProgress(progress);
+            Log.d(TAG, "onProgressChanged: " + getProgress());
+            ((HlsFileStreamingActivity) getContext()).seekBarProgress(progress);
+            ((HlsFileStreamingActivity) getContext()).getMyPreferenceManager().setLastPlayedMediaProgressValue(progress);
         }
 
         @Override
@@ -44,7 +45,7 @@ public class MediaSeekBar extends AppCompatSeekBar {
         }
     };
 
-    public boolean isTracking(){
+    public boolean isTracking() {
         return mIsTracking;
     }
 
@@ -72,6 +73,14 @@ public class MediaSeekBar extends AppCompatSeekBar {
     public void setMediaController(final MediaControllerCompat mediaController) {
         mMediaController = mediaController;
     }
+
+    public void setSeekBarProgress(int progress) {
+        mIsTracking = true;
+        mMediaController.getTransportControls().seekTo(progress);
+        mIsTracking = false;
+        setProgress(progress);
+    }
+
 
     public void disconnectController() {
         if (mMediaController != null) {

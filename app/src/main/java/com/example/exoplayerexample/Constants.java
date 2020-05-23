@@ -15,7 +15,7 @@ public class Constants {
     public static final String LAST_ARTIST_IMAGE = "LAST_ARTIST_IMAGE";
     public static final String SEEK_BAR_MAX = "SEEK_BAR_MAX";
     public static final String LAST_PLAYED_SONG_RUNNING_STATE = "LAST_PLAYED_SONG_RUNNING_STATE";
-
+    public static final String LAST_PLAYED_MEDIA_PROGRESS_VALUE = "LAST_PLAYED_SONG_PROGRESS_VALUE";
 
 
 }
