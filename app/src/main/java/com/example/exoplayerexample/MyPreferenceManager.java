@@ -7,9 +7,8 @@ import android.util.Log;
 
 import static com.example.exoplayerexample.Constants.LAST_ARTIST;
 import static com.example.exoplayerexample.Constants.LAST_ARTIST_IMAGE;
-import static com.example.exoplayerexample.Constants.LAST_CATEGORY;
 import static com.example.exoplayerexample.Constants.LAST_PLAYED_MEDIA_PROGRESS_VALUE;
-import static com.example.exoplayerexample.Constants.LAST_PLAYED_SONG_RUNNING_STATE;
+import static com.example.exoplayerexample.Constants.LAST_PLAYED_MEDIA_RUNNING_STATE;
 import static com.example.exoplayerexample.Constants.MEDIA_QUEUE_POSITION;
 import static com.example.exoplayerexample.Constants.MEDIA_SEEK_BAR_MAX_VALUE;
 import static com.example.exoplayerexample.Constants.NOW_PLAYING;
@@ -58,14 +57,14 @@ public class MyPreferenceManager {
         editor.apply();
     }
 
-    public void setIsLastPlayedSongRunning(boolean state) {
+    public void setIsLastPlayedMediaRunning(boolean state) {
         SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putBoolean(LAST_PLAYED_SONG_RUNNING_STATE, state);
+        editor.putBoolean(LAST_PLAYED_MEDIA_RUNNING_STATE, state);
         editor.apply();
     }
 
-    public Boolean isLastPlayedSongRunning() {
-        return mPreferences.getBoolean(LAST_PLAYED_SONG_RUNNING_STATE, false);
+    public Boolean isLastPlayedMediaRunning() {
+        return mPreferences.getBoolean(LAST_PLAYED_MEDIA_RUNNING_STATE, false);
     }
 
     public String getLastPlayedMediaId() {

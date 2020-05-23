@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -271,7 +270,7 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
         Log.d(TAG, "onPlaybackStateChanged: called.");
         boolean mIsPlaying = state != null &&
                 state.getState() == PlaybackStateCompat.STATE_PLAYING;
-        getMyPreferenceManager().setIsLastPlayedSongRunning(mIsPlaying);
+        getMyPreferenceManager().setIsLastPlayedMediaRunning(mIsPlaying);
 
         // update UI
         if (getMediaControllerFragment() != null) {
@@ -300,12 +299,12 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
             bundle.putInt(MEDIA_QUEUE_POSITION, queuePosition);
             if (playlistId.equals(currentPlaylistId)) {
                 mMediaBrowserHelper.getTransportControls().playFromMediaId(mediaItem.getDescription().getMediaId(), bundle);
-                getMyPreferenceManager().setIsLastPlayedSongRunning(true);
+                getMyPreferenceManager().setIsLastPlayedMediaRunning(true);
             } else {
                 bundle.putBoolean(QUEUE_NEW_PLAYLIST, true); // let the player know this is a new playlist
                 mMediaBrowserHelper.subscribeToNewPlaylist(currentPlaylistId, playlistId);
                 mMediaBrowserHelper.getTransportControls().playFromMediaId(mediaItem.getDescription().getMediaId(), bundle);
-                getMyPreferenceManager().setIsLastPlayedSongRunning(true);
+                getMyPreferenceManager().setIsLastPlayedMediaRunning(true);
             }
 
             mOnAppOpen = true;
@@ -327,9 +326,9 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
 
     @Override
     public void playPause() {
-        Log.d(TAG, "playPause: " + "mOnAppOpen + " + mOnAppOpen + " mIsPlaying" + getMyPreferenceManager().isLastPlayedSongRunning());
+        Log.d(TAG, "playPause: " + "mOnAppOpen + " + mOnAppOpen + " mIsPlaying" + getMyPreferenceManager().isLastPlayedMediaRunning());
         if (mOnAppOpen) {
-            if (getMyPreferenceManager().isLastPlayedSongRunning()) {
+            if (getMyPreferenceManager().isLastPlayedMediaRunning()) {
                 mMediaBrowserHelper.getTransportControls().pause();
             } else {
                 mMediaBrowserHelper.getTransportControls().play();
@@ -413,7 +412,7 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
             if (mediaDocument1.getDescription().getMediaId().equals(getMyPreferenceManager().getLastPlayedMediaId())) {
                 getMediaControllerFragment().setMediaTitle(mediaDocument1);
                 getMediaControllerFragment().setMediaDurationText(mediaDocument1.getLong(MediaMetadataCompat.METADATA_KEY_DURATION));
-                getMediaControllerFragment().setIsPlaying(getMyPreferenceManager().isLastPlayedSongRunning());
+                getMediaControllerFragment().setIsPlaying(getMyPreferenceManager().isLastPlayedMediaRunning());
                 getMediaControllerFragment().getMediaSeekBar().setMax( getMyPreferenceManager().getLastPlayedMediaSeekbarMaxValue());
                 getMediaControllerFragment().getMediaSeekBar().setProgress( getMyPreferenceManager().getLastPlayedMediaProgressValue());
 

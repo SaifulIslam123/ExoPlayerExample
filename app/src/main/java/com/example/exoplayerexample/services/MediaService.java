@@ -275,7 +275,7 @@ public class MediaService extends MediaBrowserServiceCompat {
                             state,
                             mPlayback.getCurrentMedia().getString(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON_URI)
                     );
-                    mMyPrefManager.setIsLastPlayedSongRunning(true);
+                    mMyPrefManager.setIsLastPlayedMediaRunning(true);
                     break;
                 case PlaybackStateCompat.STATE_PAUSED:
                     Log.d(TAG, "onPlaybackStateChange: STATE_PAUSED");
@@ -283,12 +283,12 @@ public class MediaService extends MediaBrowserServiceCompat {
                             state,
                             mPlayback.getCurrentMedia().getString(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON_URI)
                     );
-                    mMyPrefManager.setIsLastPlayedSongRunning(false);
+                    mMyPrefManager.setIsLastPlayedMediaRunning(false);
                     break;
                 case PlaybackStateCompat.STATE_STOPPED:
                     Log.d(TAG, "onPlaybackStateChange: STOPPED.");
                     mServiceManager.moveServiceOutOfStartedState();
-                    mMyPrefManager.setIsLastPlayedSongRunning(false);
+                    mMyPrefManager.setIsLastPlayedMediaRunning(false);
                     break;
             }
         }
