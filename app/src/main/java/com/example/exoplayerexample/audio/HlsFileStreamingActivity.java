@@ -78,7 +78,7 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
 
         prepareMediaData();
 
-        Log.d(TAG, "onCreate: "+getMyPreferenceManager().getLastPlayedMediaProgressValue());
+        Log.d(TAG, "onCreate: " + getMyPreferenceManager().getLastPlayedMediaProgressValue());
 
         if (savedInstanceState == null) {
 
@@ -207,7 +207,9 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
     public void onMediaControllerConnected(MediaControllerCompat mediaController) {
         getMediaControllerFragment().getMediaSeekBar().setMediaController(mediaController);
 
-        mediaController.getTransportControls().seekTo(getMyPreferenceManager().getLastPlayedMediaProgressValue());
+        if (!getMyPreferenceManager().getLastPlayedMediaId().equals("") && !getMyPreferenceManager().isLastPlayedMediaRunning()) {
+            mediaController.getTransportControls().seekTo(getMyPreferenceManager().getLastPlayedMediaProgressValue());
+        }
     }
 
     @Override
@@ -236,8 +238,8 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
 
             long seekProgress = intent.getLongExtra(SEEK_BAR_PROGRESS, 0);
             long seekMax = intent.getLongExtra(SEEK_BAR_MAX, 0);
-            getMyPreferenceManager().setLastPlayedMediaSeekbarMaxValue((int)seekMax);
-            getMyPreferenceManager().setLastPlayedMediaProgressValue((int)seekProgress);
+            getMyPreferenceManager().setLastPlayedMediaSeekbarMaxValue((int) seekMax);
+            getMyPreferenceManager().setLastPlayedMediaProgressValue((int) seekProgress);
             Log.d(TAG, "onReceive: " + "seekProgress " + seekProgress + " seekMax " + seekMax);
             if (!getMediaControllerFragment().getMediaSeekBar().isTracking()) {
                 getMediaControllerFragment().getMediaSeekBar().setProgress((int) seekProgress);
@@ -413,8 +415,8 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
                 getMediaControllerFragment().setMediaTitle(mediaDocument1);
                 getMediaControllerFragment().setMediaDurationText(mediaDocument1.getLong(MediaMetadataCompat.METADATA_KEY_DURATION));
                 getMediaControllerFragment().setIsPlaying(getMyPreferenceManager().isLastPlayedMediaRunning());
-                getMediaControllerFragment().getMediaSeekBar().setMax( getMyPreferenceManager().getLastPlayedMediaSeekbarMaxValue());
-                getMediaControllerFragment().getMediaSeekBar().setProgress( getMyPreferenceManager().getLastPlayedMediaProgressValue());
+                getMediaControllerFragment().getMediaSeekBar().setMax(getMyPreferenceManager().getLastPlayedMediaSeekbarMaxValue());
+                getMediaControllerFragment().getMediaSeekBar().setProgress(getMyPreferenceManager().getLastPlayedMediaProgressValue());
 
                 updateUI(mediaDocument1);
                 mOnAppOpen = true;
