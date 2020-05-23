@@ -207,6 +207,8 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
     @Override
     public void onMediaControllerConnected(MediaControllerCompat mediaController) {
         getMediaControllerFragment().getMediaSeekBar().setMediaController(mediaController);
+
+        mediaController.getTransportControls().seekTo(getMyPreferenceManager().getLastPlayedMediaProgressValue());
     }
 
     @Override
@@ -332,6 +334,7 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
             } else {
                 mMediaBrowserHelper.getTransportControls().play();
             }
+
         } else {
             if (!getMyPreferenceManager().getLastPlayedMediaId().equals("")) {
                 onMediaSelected(
@@ -413,7 +416,7 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
                 getMediaControllerFragment().setIsPlaying(getMyPreferenceManager().isLastPlayedSongRunning());
                 getMediaControllerFragment().getMediaSeekBar().setMax( getMyPreferenceManager().getLastPlayedMediaSeekbarMaxValue());
                 getMediaControllerFragment().getMediaSeekBar().setProgress( getMyPreferenceManager().getLastPlayedMediaProgressValue());
-                getMediaController().getTransportControls().seekTo(getMyPreferenceManager().getLastPlayedMediaProgressValue());
+
                 updateUI(mediaDocument1);
                 mOnAppOpen = true;
 
