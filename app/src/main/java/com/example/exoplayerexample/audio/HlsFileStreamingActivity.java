@@ -72,12 +72,14 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
         mRecyclerView.setAdapter(mAdapter);
 
         mMyApplication = MyApplication.getInstance();
-        mMyPrefManager = new MyPreferenceManager(this);
+        mMyPrefManager = new MyPreferenceManager(getApplicationContext());
 
         mMediaBrowserHelper = new MediaBrowserHelper(this, MediaService.class);
         mMediaBrowserHelper.setMediaBrowserHelperCallback(this);
 
         prepareMediaData();
+
+        Log.d(TAG, "onCreate: "+getMyPreferenceManager().getLastPlayedMediaProgressValue());
 
         if (savedInstanceState == null) {
 
@@ -205,8 +207,6 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
     @Override
     public void onMediaControllerConnected(MediaControllerCompat mediaController) {
         getMediaControllerFragment().getMediaSeekBar().setMediaController(mediaController);
-        Log.d(TAG, "onMediaControllerConnected: "+getMyPreferenceManager().getLastPlayedMediaProgressValue());
-        getMediaControllerFragment().getMediaSeekBar().setSeekBarProgress(getMyPreferenceManager().getLastPlayedMediaProgressValue());
     }
 
     @Override
@@ -232,8 +232,12 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
 
         @Override
         public void onReceive(Context context, Intent intent) {
+
             long seekProgress = intent.getLongExtra(SEEK_BAR_PROGRESS, 0);
             long seekMax = intent.getLongExtra(SEEK_BAR_MAX, 0);
+            getMyPreferenceManager().setLastPlayedMediaSeekbarMaxValue((int)seekMax);
+            getMyPreferenceManager().setLastPlayedMediaProgressValue((int)seekProgress);
+            Log.d(TAG, "onReceive: " + "seekProgress " + seekProgress + " seekMax " + seekMax);
             if (!getMediaControllerFragment().getMediaSeekBar().isTracking()) {
                 getMediaControllerFragment().getMediaSeekBar().setProgress((int) seekProgress);
                 getMediaControllerFragment().getMediaSeekBar().setMax((int) seekMax);
@@ -407,6 +411,9 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
                 getMediaControllerFragment().setMediaTitle(mediaDocument1);
                 getMediaControllerFragment().setMediaDurationText(mediaDocument1.getLong(MediaMetadataCompat.METADATA_KEY_DURATION));
                 getMediaControllerFragment().setIsPlaying(getMyPreferenceManager().isLastPlayedSongRunning());
+                getMediaControllerFragment().getMediaSeekBar().setMax( getMyPreferenceManager().getLastPlayedMediaSeekbarMaxValue());
+                getMediaControllerFragment().getMediaSeekBar().setProgress( getMyPreferenceManager().getLastPlayedMediaProgressValue());
+                getMediaController().getTransportControls().seekTo(getMyPreferenceManager().getLastPlayedMediaProgressValue());
                 updateUI(mediaDocument1);
                 mOnAppOpen = true;
 

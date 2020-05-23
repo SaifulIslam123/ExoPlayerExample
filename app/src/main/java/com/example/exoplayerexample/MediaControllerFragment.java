@@ -130,6 +130,7 @@ public class MediaControllerFragment extends Fragment implements
     }
 
     public void setCurrentProgess(long progress) {
+        Log.d("Hls", "setCurrentProgess: "+progress);
         mediaProgressDurationTV.setText(Utils.milliSecondsToTimer(progress));
     }
 }

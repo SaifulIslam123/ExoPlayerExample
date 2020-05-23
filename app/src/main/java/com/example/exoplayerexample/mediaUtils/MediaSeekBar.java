@@ -11,6 +11,7 @@ import android.widget.SeekBar;
 
 import androidx.appcompat.widget.AppCompatSeekBar;
 
+import com.example.exoplayerexample.MyPreferenceManager;
 import com.example.exoplayerexample.audio.HlsFileStreamingActivity;
 
 /**
@@ -25,12 +26,14 @@ public class MediaSeekBar extends AppCompatSeekBar {
     private MediaControllerCompat mMediaController;
     private boolean mIsTracking = false;
 
+    private MyPreferenceManager myPreferenceManager;
+
     private SeekBar.OnSeekBarChangeListener mOnSeekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             Log.d(TAG, "onProgressChanged: " + getProgress());
             ((HlsFileStreamingActivity) getContext()).seekBarProgress(progress);
-            ((HlsFileStreamingActivity) getContext()).getMyPreferenceManager().setLastPlayedMediaProgressValue(progress);
+            //((HlsFileStreamingActivity) getContext()).getMyPreferenceManager().setLastPlayedMediaProgressValue(progress);
         }
 
         @Override
@@ -73,14 +76,6 @@ public class MediaSeekBar extends AppCompatSeekBar {
     public void setMediaController(final MediaControllerCompat mediaController) {
         mMediaController = mediaController;
     }
-
-    public void setSeekBarProgress(int progress) {
-        mIsTracking = true;
-        mMediaController.getTransportControls().seekTo(progress);
-        mIsTracking = false;
-        setProgress(progress);
-    }
-
 
     public void disconnectController() {
         if (mMediaController != null) {

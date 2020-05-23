@@ -11,6 +11,7 @@ import static com.example.exoplayerexample.Constants.LAST_CATEGORY;
 import static com.example.exoplayerexample.Constants.LAST_PLAYED_MEDIA_PROGRESS_VALUE;
 import static com.example.exoplayerexample.Constants.LAST_PLAYED_SONG_RUNNING_STATE;
 import static com.example.exoplayerexample.Constants.MEDIA_QUEUE_POSITION;
+import static com.example.exoplayerexample.Constants.MEDIA_SEEK_BAR_MAX_VALUE;
 import static com.example.exoplayerexample.Constants.NOW_PLAYING;
 import static com.example.exoplayerexample.Constants.PLAYLIST_ID;
 
@@ -80,6 +81,17 @@ public class MyPreferenceManager {
     public int getLastPlayedMediaProgressValue() {
         return mPreferences.getInt(LAST_PLAYED_MEDIA_PROGRESS_VALUE, 0);
     }
+
+    public void setLastPlayedMediaSeekbarMaxValue(int progressValue) {
+        SharedPreferences.Editor editor = mPreferences.edit();
+        editor.putInt(MEDIA_SEEK_BAR_MAX_VALUE, progressValue);
+        editor.apply();
+    }
+
+    public int getLastPlayedMediaSeekbarMaxValue() {
+        return mPreferences.getInt(MEDIA_SEEK_BAR_MAX_VALUE, 0);
+    }
+
 
     public void saveLastPlayedArtist(String artist) {
         SharedPreferences.Editor editor = mPreferences.edit();
