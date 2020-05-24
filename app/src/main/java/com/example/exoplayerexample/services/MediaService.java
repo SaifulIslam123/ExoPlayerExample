@@ -302,12 +302,15 @@ public class MediaService extends MediaBrowserServiceCompat {
 
         @Override
         public void onSeekTo(long progress, long max) {
-//            Log.d(TAG, "onSeekTo: CALLED: updating seekbar: " + progress + ", max: " + max);
+            Log.d(TAG, "onSeekTo: CALLED: updating seekbar: " + progress + ", max: " + max);
             Intent intent = new Intent();
             intent.setAction(getString(R.string.broadcast_seekbar_update));
             intent.putExtra(SEEK_BAR_PROGRESS, progress);
             intent.putExtra(SEEK_BAR_MAX, max);
             sendBroadcast(intent);
+
+            mMyPrefManager.setLastPlayedMediaProgressValue((int) progress);
+            mMyPrefManager.setLastPlayedMediaSeekbarMaxValue((int) max);
         }
 
         @Override
@@ -433,6 +436,11 @@ public class MediaService extends MediaBrowserServiceCompat {
             }
             return null;
         }
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        return START_STICKY;
     }
 }
 
