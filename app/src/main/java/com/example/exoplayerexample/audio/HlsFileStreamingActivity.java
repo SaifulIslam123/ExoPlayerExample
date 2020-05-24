@@ -415,8 +415,11 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
                 getMediaControllerFragment().setMediaTitle(mediaDocument1);
                 getMediaControllerFragment().setMediaDurationText(mediaDocument1.getLong(MediaMetadataCompat.METADATA_KEY_DURATION));
                 getMediaControllerFragment().setIsPlaying(getMyPreferenceManager().isLastPlayedMediaRunning());
-                getMediaControllerFragment().getMediaSeekBar().setMax(getMyPreferenceManager().getLastPlayedMediaSeekbarMaxValue());
-                getMediaControllerFragment().getMediaSeekBar().setProgress(getMyPreferenceManager().getLastPlayedMediaProgressValue());
+
+                if (!getMyPreferenceManager().isLastPlayedMediaRunning()) {
+                    getMediaControllerFragment().getMediaSeekBar().setMax(getMyPreferenceManager().getLastPlayedMediaSeekbarMaxValue());
+                    getMediaControllerFragment().getMediaSeekBar().setProgress(getMyPreferenceManager().getLastPlayedMediaProgressValue());
+                }
 
                 updateUI(mediaDocument1);
                 mOnAppOpen = true;
