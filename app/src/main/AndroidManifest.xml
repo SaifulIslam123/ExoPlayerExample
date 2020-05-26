@@ -36,7 +36,8 @@
 
         <service android:name=".audio.AudioDownloadService" />
         <service android:name=".audio.AudioPlayerService" />
-        <service android:name=".services.MediaService">
+        <service android:name=".services.MediaService"
+            >
             <intent-filter>
                 <action android:name="android.media.browse.MediaBrowserService" />
             </intent-filter>

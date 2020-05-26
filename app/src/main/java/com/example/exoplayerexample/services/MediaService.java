@@ -90,14 +90,18 @@ public class MediaService extends MediaBrowserServiceCompat {
             mMyPrefManager.setLastPlayedMediaSeekbarMaxValue(0);
         }
 
-        // mPlayback.stop();
-        //stopSelf();
+        mPlayback.stop();
+        stopSelf();
 
 
     }
 
     @Override
     public void onDestroy() {
+        if (!mPlayback.isPlaying()) {
+            mMyPrefManager.setLastPlayedMediaProgressValue(0);
+            mMyPrefManager.setLastPlayedMediaSeekbarMaxValue(0);
+        }
         mSession.release();
         Log.d(TAG, "onDestroy: MediaPlayerAdapter stopped, and MediaSession released");
     }
@@ -197,7 +201,7 @@ public class MediaService extends MediaBrowserServiceCompat {
 
         @Override
         public void onPlay() {
-
+            Log.d(TAG, "onPlay: ");
             if (!isReadyToPlay()) {
                 // Nothing to play.
                 return;
@@ -214,6 +218,7 @@ public class MediaService extends MediaBrowserServiceCompat {
 
         @Override
         public void onPause() {
+            Log.d(TAG, "onPause: ");
             mPlayback.pause();
         }
 
