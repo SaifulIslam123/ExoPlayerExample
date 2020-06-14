@@ -143,59 +143,6 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
 
     }
 
-    public void prepareMediaData() {
-
-        MediaDocument mediaDocument = new MediaDocument();
-        mediaDocument.setFieldArtist("Andy Largo");
-        mediaDocument.setFieldArtistId("largoo_007");
-        mediaDocument.setFieldDateAdded(new Date());
-        mediaDocument.setFieldDescription("Andy Largo L.O.T.S. Lechfeld, Bavaria 31-10-2018");
-        // mediaDocument.setFieldMediaId("FJYw5g2JgWuoXHoiEeyi");
-        mediaDocument.setFieldMediaId("50000015");
-        mediaDocument.setFieldMediaUrl("https://bitmovin-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8");
-        mediaDocument.setFieldTitle("Andy Largo L.O.T.S. Lechfeld, Bavaria");
-        mediaDocument.setFieldMediaImage("https://i.imgur.com/DvpvklR.png");
-        mediaDocument.setFieldMediaDuration(210000);
-
-        MediaDocument mediaDocument2 = new MediaDocument();
-        mediaDocument2.setFieldArtist("Bruno mars");
-        mediaDocument2.setFieldArtistId("mars_007");
-        mediaDocument2.setFieldDateAdded(new Date());
-        mediaDocument2.setFieldDescription("Bruno mars  L.O.T.S. Lechfeld, Bavaria 31-10-2018");
-        mediaDocument2.setFieldMediaId("50000016");
-        mediaDocument2.setFieldMediaUrl("http://playertest.longtailvideo.com/adaptive/bbbfull/bbbfull.m3u8");
-        mediaDocument2.setFieldTitle("Bruno mars song , stay away from me");
-        mediaDocument2.setFieldMediaImage("https://goo.gl/32YN2B");
-        mediaDocument2.setFieldMediaDuration(596000);
-
-        mainMediaDocumentArrayList.add(addToMediaList(mediaDocument));
-        mainMediaDocumentArrayList.add(addToMediaList(mediaDocument2));
-
-
-    }
-
-    /**
-     * Translate the Firestore data into something the MediaBrowserService can deal with (MediaMetaDataCompat objects)
-     *
-     * @param document
-     */
-    private MediaMetadataCompat addToMediaList(MediaDocument document) {
-
-        MediaMetadataCompat media = new MediaMetadataCompat.Builder()
-                .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, document.getFieldMediaId())
-                .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, document.getFieldArtist())
-                .putString(MediaMetadataCompat.METADATA_KEY_TITLE, document.getFieldTitle())
-                .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_URI, document.getFieldMediaUrl())
-                .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_DESCRIPTION, document.getFieldDescription())
-                .putString(MediaMetadataCompat.METADATA_KEY_DATE, document.getFieldDateAdded().toString())
-                .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON_URI, document.getFieldMediaImage())
-                .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, document.getFieldMediaDuration())
-                .build();
-
-        return media;
-    }
-
-
     private void initUpdateUIBroadcastReceiver() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(getString(R.string.broadcast_update_ui));
@@ -466,5 +413,58 @@ public class HlsFileStreamingActivity extends AppCompatActivity implements IHlsA
 
     public void seekBarProgress(long progress) {
         getMediaControllerFragment().setCurrentProgess(progress);
+    }
+
+
+    public void prepareMediaData() {
+
+        MediaDocument mediaDocument = new MediaDocument();
+        mediaDocument.setFieldArtist("Andy Largo");
+        mediaDocument.setFieldArtistId("largoo_007");
+        mediaDocument.setFieldDateAdded(new Date());
+        mediaDocument.setFieldDescription("Andy Largo L.O.T.S. Lechfeld, Bavaria 31-10-2018");
+        // mediaDocument.setFieldMediaId("FJYw5g2JgWuoXHoiEeyi");
+        mediaDocument.setFieldMediaId("50000015");
+        mediaDocument.setFieldMediaUrl("https://bitmovin-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8");
+        mediaDocument.setFieldTitle("Andy Largo L.O.T.S. Lechfeld, Bavaria");
+        mediaDocument.setFieldMediaImage("https://i.imgur.com/DvpvklR.png");
+        mediaDocument.setFieldMediaDuration(210000);
+
+        MediaDocument mediaDocument2 = new MediaDocument();
+        mediaDocument2.setFieldArtist("Bruno mars");
+        mediaDocument2.setFieldArtistId("mars_007");
+        mediaDocument2.setFieldDateAdded(new Date());
+        mediaDocument2.setFieldDescription("Bruno mars  L.O.T.S. Lechfeld, Bavaria 31-10-2018");
+        mediaDocument2.setFieldMediaId("50000016");
+        mediaDocument2.setFieldMediaUrl("http://playertest.longtailvideo.com/adaptive/bbbfull/bbbfull.m3u8");
+        mediaDocument2.setFieldTitle("Bruno mars song , stay away from me");
+        mediaDocument2.setFieldMediaImage("https://goo.gl/32YN2B");
+        mediaDocument2.setFieldMediaDuration(596000);
+
+        mainMediaDocumentArrayList.add(addToMediaList(mediaDocument));
+        mainMediaDocumentArrayList.add(addToMediaList(mediaDocument2));
+
+
+    }
+
+    /**
+     * Translate the Firestore data into something the MediaBrowserService can deal with (MediaMetaDataCompat objects)
+     *
+     * @param document
+     */
+    private MediaMetadataCompat addToMediaList(MediaDocument document) {
+
+        MediaMetadataCompat media = new MediaMetadataCompat.Builder()
+                .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, document.getFieldMediaId())
+                .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, document.getFieldArtist())
+                .putString(MediaMetadataCompat.METADATA_KEY_TITLE, document.getFieldTitle())
+                .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_URI, document.getFieldMediaUrl())
+                .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_DESCRIPTION, document.getFieldDescription())
+                .putString(MediaMetadataCompat.METADATA_KEY_DATE, document.getFieldDateAdded().toString())
+                .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON_URI, document.getFieldMediaImage())
+                .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, document.getFieldMediaDuration())
+                .build();
+
+        return media;
     }
 }
